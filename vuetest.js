@@ -1,21 +1,27 @@
+const BASE_URL = "https://ghibliapi.herokuapp.com/"
+
 Vue.component('listitem', {
   props: ['licontent'],
   template:'<li>{{licontent.title}}</li>'
 })
 
 Vue.component('searchresults',{
-  props:['moviesearch'],
+  props:['moviesearch', 'param'],
   data:function(){
     return {
       clicked:false,
+      // data for which param
+
     }
   },
   methods:{
     displayall:function(){
       this.clicked = !this.clicked
-    }
+    },
+
+
   },
-  template:`<li v-if="!clicked" v-on:click="displayall">{{moviesearch.title}}</li>
+  template:`<li v-if="!clicked" v-on:click="displayall">{{moviesearch[param]}}</li>
             <li v-else v-on:click="displayall">
               <table>
                 <tr v-for="(key, value) in moviesearch">
@@ -24,7 +30,7 @@ Vue.component('searchresults',{
                 </tr>
               </table>
              </li>
-  `
+             `
 })
 
 var app = new Vue({
@@ -49,32 +55,61 @@ var app = new Vue({
 })
 
 
-
 var apiapp = new Vue({
   el:'#api-app',
   data:{
     ghibli:null,
     searchresults:[],
     searchstring:'',
+    searchparam:"title",
   },
 
   created:function(){
     axios
-      .get("https://ghibliapi.herokuapp.com/films")
+      .get(BASE_URL + "films")
       .then(response => this.ghibli = response.data)
   },
   methods:{
-    searchbytitle:function(){
+    searchbypeople:function(){
+      axios
+        .get(BASE_URL + "people")
+        .then(response => this.ghibli = response.data)
 
+      this.searchparam = "name"
+    },
+    searchbytitle:function(){
+      axios
+        .get(BASE_URL + "films")
+        .then(response => this.ghibli = response.data)
+
+      this.searchparam = "title"
     },
     showpossibleresults:function(){
       // var arr = []
       var sr = []
       let ss = this.searchstring.toLowerCase()
       // console.log(this.searchstring);
+      let param = this.searchparam
       this.ghibli.forEach(function(x){
         // console.log(x.title.toLowerCase())
-        if(x.title.toLowerCase().includes(ss)){
+
+        if(x[param].toLowerCase().includes(ss)){
+          // console.log(x['title'], param)
+          sr.push(x)
+        }
+      })
+      // console.log(arr)
+      this.searchresults = sr;
+
+    },
+    showpeopleresults:function(){
+      // var arr = []
+      var sr = []
+      let ss = this.searchstring.toLowerCase()
+      // console.log(this.searchstring);
+      this.ghibli.forEach(function(x){
+        // console.log(x.title.toLowerCase())
+        if(x.name.toLowerCase().includes(ss)){
           // console.log(x.title
           sr.push(x)
         }
@@ -82,7 +117,7 @@ var apiapp = new Vue({
       // console.log(arr)
       this.searchresults = sr;
 
-    }
+    },
   }
 
 })

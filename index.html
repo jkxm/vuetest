@@ -33,15 +33,17 @@
         <searchresults
           v-for="s in searchresults"
           v-bind:moviesearch="s"
-          
+          v-bind:param="searchparam"
         ></searchresults>
       </ol>
 
-
+      <span>Searching by {{searchparam}}</span>
       <input v-model='searchstring' v-on:input="showpossibleresults" type='text' />
+      <!-- <input v-else v-model='searchstring' v-on:input="showpeopleresults" type='text' /> -->
       <!-- {{ ghibli }} -->
       <!-- <button type v-on:click="showstuff">populate with ghibli objects</button> -->
-
+      <button v-if="searchparam==='title'" v-on:click="searchbypeople">Search by person</button>
+      <button v-else v-on:click="searchbytitle">Search by title</button>
     </div>
 
 
