@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      {{ message }}
+
+      <ol>
+        <!-- <li v-for="todo in todos">
+          {{ todo }}
+        </li> -->
+        <listitem v-for="todo in todos"></listitem>
+      </ol>
+
+      <button v-on:click="reverse">Reverse</button>
+    </div>
+
+    <div id="api-app">
+      <!-- <ol>
+        <listitem
+          v-for="g in ghibli"
+          v-bind:licontent="g"
+          v-bind:key="g.id"
+        ></listitem>
+      </ol> -->
+
+      <ol>
+        <searchresults
+          v-for="s in searchresults"
+          v-bind:moviesearch="s"
+          
+        ></searchresults>
+      </ol>
+
+
+      <input v-model='searchstring' v-on:input="showpossibleresults" type='text' />
+      <!-- {{ ghibli }} -->
+      <!-- <button type v-on:click="showstuff">populate with ghibli objects</button> -->
+
+    </div>
+
+
+    <!-- <div id="app-4">
+      <ol>
+        <li v-for="todo in todos">
+          {{ todo }}
+        </li>
+      </ol>
+    </div> -->
+
+
+    <script src="./vuetest.js"></script>
+  </body>
+</html>
